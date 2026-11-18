@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SolCycle – Jumeau numérique ACV solaire pour l’Algérie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f6f2;--ink:#0d2b30;--mut:#4d6468;--card:#ffffff;--line:#d5e0dc;--sun:#f0a202;--sea:#0f5560;--moss:#4f8a5b;--soft:#e6efe9;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1a1d;--ink:#e8f1ee;--mut:#9bb3b4;--card:#112a2e;--line:#244148;--sun:#ffb81f;--sea:#5ec1cf;--moss:#7bc189;--soft:#163237}}
+:root[data-theme="dark"]{--bg:#0a1a1d;--ink:#e8f1ee;--mut:#9bb3b4;--card:#112a2e;--line:#244148;--sun:#ffb81f;--sea:#5ec1cf;--moss:#7bc189;--soft:#163237}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 'Instrument Sans',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;line-height:1.1;margin:0 0 .5em;letter-spacing:-.02em}
+h1{font-size:clamp(2.3rem,6vw,4.2rem);font-weight:800}h2{font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:700}h3{font-size:1.2rem;font-weight:700}
+p{margin:0 0 1em;max-width:68ch}a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}section{padding:76px 0}
+nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:14px}
+.logo{font:800 1.25rem 'Bricolage Grotesque';text-decoration:none;display:flex;gap:8px;align-items:center}
+nav div{display:flex;gap:18px;font-size:.92rem;overflow-x:auto;white-space:nowrap}nav div a{text-decoration:none;color:var(--mut)}nav div a:hover{color:var(--ink)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;padding:56px 0 40px}
+.hero p.lead{font-size:1.2rem;color:var(--mut)}
+.btn{display:inline-block;background:var(--ink);color:var(--bg);padding:13px 22px;border-radius:999px;text-decoration:none;font-weight:600;margin:6px 8px 6px 0}
+.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.tags span{background:var(--soft);padding:5px 12px;border-radius:999px;font-size:.85rem}
+.ring{width:100%;max-width:440px;margin:auto;display:block}
+.spin{transform-origin:200px 200px;animation:spin 40s linear infinite}.spin2{transform-origin:200px 200px;animation:spin 14s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{opacity:.55;transform:scale(1.06)}}
+.sun{transform-origin:200px 200px;animation:pulse 4s ease-in-out infinite}
+.flow{stroke-dasharray:6 8;animation:dash 1.4s linear infinite}@keyframes dash{to{stroke-dashoffset:-14}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:start}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card.k{border-top:4px solid var(--sun)}.card.g{border-top:4px solid var(--moss)}.card.b{border-top:4px solid var(--sea)}
+.card .ic{font-size:1.7rem}.big{font:800 2.6rem 'Bricolage Grotesque';color:var(--sea)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}.stats .card p{margin:0;color:var(--mut);font-size:.95rem}
+.alt-bg{background:var(--soft)}
+/* simulator */
+.sim{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px}
+.sim label{display:block;font-weight:600;font-size:.92rem;margin:14px 0 5px}
+.sim select,.sim input[type=range]{width:100%}
+.sim select{padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+input[type=range]{accent-color:var(--sun)}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.res .card{padding:14px}.res .v{font:800 1.9rem 'Bricolage Grotesque'}.res .l{font-size:.85rem;color:var(--mut)}
+.life{position:relative;height:34px;background:var(--soft);border-radius:8px;margin:34px 0 8px;overflow:hidden}
+.life i{position:absolute;top:0;bottom:0;left:0;transition:width .6s}
+.life .e{background:var(--moss)}.life .p{background:var(--sun);opacity:.85}
+.leg{font-size:.85rem;color:var(--mut);display:flex;gap:16px;flex-wrap:wrap}
+.leg b{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px}
+.ai{background:var(--ink);color:var(--bg);border-radius:14px;padding:16px 18px;margin-top:14px;font-size:.95rem}
+.ai strong{color:var(--sun)}.ai ul{margin:6px 0 0;padding-left:18px}
+.note{font-size:.82rem;color:var(--mut)}
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;counter-reset:s}
+.steps div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;position:relative;font-size:.92rem}
+.steps div b{display:block;font-family:'Bricolage Grotesque';font-size:1.05rem;margin-bottom:4px}
+.steps div:before{counter-increment:s;content:counter(s);position:absolute;top:-12px;left:14px;background:var(--sun);color:#0d2b30;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.85rem}
+.tl{border-left:3px solid var(--sun);padding-left:22px;margin-left:8px}.tl div{margin-bottom:22px;position:relative}
+.tl div:before{content:"";position:absolute;left:-30px;top:6px;width:13px;height:13px;border-radius:50%;background:var(--sun)}
+ul.chk{list-style:none;padding:0;margin:0}ul.chk li{padding:6px 0 6px 28px;position:relative}ul.chk li:before{content:"✓";position:absolute;left:0;color:var(--moss);font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:.93rem}td,th{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.scroll{overflow-x:auto}
+.chat{margin-bottom:22px;max-width:760px}.chat .m{opacity:0;padding:10px 14px;border-radius:14px;margin:8px 0;max-width:88%;font-size:.95rem}.chat .u{background:var(--soft);margin-left:auto}.chat .a{background:var(--ink);color:var(--bg)}.chat .a b{color:var(--sun)}.chat.on .m{animation:pop .5s forwards}@keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){.chat .m{opacity:1}}
+footer{padding:40px 0;border-top:1px solid var(--line);color:var(--mut);font-size:.9rem}
+.rv{opacity:0;transform:translateY(14px);transition:.7s}.rv.on{opacity:1;transform:none}
+@media(max-width:860px){.hero,.two,.sim,.grid3,.stats{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr 1fr}section{padding:54px 0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a class="logo" href="#top"><svg width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="6" fill="var(--sun)"/><path d="M13 1v4M13 21v4M1 13h4M21 13h4M4.5 4.5l2.8 2.8M18.7 18.7l2.8 2.8M4.5 21.5l2.8-2.8M18.7 7.3l2.8-2.8" stroke="var(--sea)" stroke-width="2" stroke-linecap="round"/></svg>SolCycle</a>
+<div><a href="#probleme">Problème</a><a href="#solution">Solution</a><a href="#demo">Simulateur</a><a href="#archi">Architecture</a><a href="#acv">Méthode ACV</a><a href="#ia">IA</a><a href="#cibles">Publics</a><a href="#feuille">Feuille de route</a><a href="#algerie">Algérie</a></div></div></nav>
+
+<main id="top">
+<div class="wrap hero">
+<div>
+<h1>Le jumeau numérique solaire pensé pour l’Algérie.</h1>
+<p class="lead">SolCycle simule une installation photovoltaïque (toiture, ferme au sol, pompage) avec des données algériennes : ensoleillement du Nord au Sahara, tarifs Sonelgaz, coûts locaux et mix électrique du pays. Il calcule la rentabilité en dinars, le retour énergétique, le CO₂ évité et le dimensionnement optimal.</p>
+<a class="btn" href="#demo">Essayer le simulateur</a><a class="btn alt" href="#algerie">Pourquoi l’Algérie</a>
+<div class="tags"><span>Analyse du cycle de vie (ACV)</span><span>Jumeau numérique</span><span>IA : prévision, optimisation, assistant</span><span>Données algériennes</span><span>Particuliers · PME · Agriculteurs · Collectivités</span></div>
+</div>
+<svg class="ring" viewBox="0 0 400 400" role="img" aria-label="Cycle de vie d’une installation solaire : matières premières, fabrication, transport, exploitation, recyclage">
+<circle cx="200" cy="200" r="150" fill="none" stroke="var(--line)" stroke-width="2"/>
+<g class="spin"><circle cx="200" cy="200" r="150" fill="none" stroke="var(--moss)" stroke-width="3" stroke-dasharray="10 14"/>
+<g font-size="26" text-anchor="middle"><circle cx="200" cy="50" r="26" fill="var(--card)" stroke="var(--line)"/><text x="200" y="59">⛏️</text>
+<circle cx="342" cy="96" r="26" fill="var(--card)" stroke="var(--line)"/><text x="342" y="105">🏭</text>
+<circle cx="354" cy="266" r="26" fill="var(--card)" stroke="var(--line)"/><text x="354" y="275">🚚</text>
+<circle cx="200" cy="350" r="26" fill="var(--card)" stroke="var(--line)"/><text x="200" y="359">⚡</text>
+<circle cx="46" cy="266" r="26" fill="var(--card)" stroke="var(--line)"/><text x="46" y="275">♻️</text></g></g>
+<g class="spin2"><circle cx="200" cy="200" r="98" fill="none" stroke="var(--sea)" stroke-width="2" stroke-dasharray="3 9"/></g>
+<g class="sun"><circle cx="200" cy="200" r="52" fill="var(--sun)"/>
+<g stroke="var(--sun)" stroke-width="5" stroke-linecap="round"><path d="M200 126v-14M200 288v14M126 200h-14M288 200h14M148 148l-10-10M252 252l10 10M148 252l-10 10M252 148l10-10"/></g></g>
+<text x="200" y="207" text-anchor="middle" font-family="Bricolage Grotesque" font-weight="800" font-size="20" fill="#0d2b30">SolCycle</text>
+</svg>
+</div>
+
+<section id="probleme" class="alt-bg"><div class="wrap">
+<h2>Le problème : des outils construits pour d’autres pays</h2>
+<p>Les simulateurs solaires existent déjà, mais ils reposent sur des données d’Europe et des États-Unis : tarifs, coûts, réseau, climat. Un porteur de projet algérien obtient des résultats qui ne correspondent pas à sa réalité.</p>
+<div class="grid3">
+<div class="card k"><div class="ic">💶</div><h3>Rentabilité faussée</h3><p>Tarifs en euros ou en dollars, électricité chère : le calcul ne reflète pas l’électricité subventionnée ni le coût du gasoil en Algérie.</p></div>
+<div class="card g"><div class="ic">🌍</div><h3>Carbone mal estimé</h3><p>Le CO₂ évité dépend du mix électrique du pays, et le transport des modules importés pèse dans le bilan.</p></div>
+<div class="card b"><div class="ic">🏜️</div><h3>Réalités locales absentes</h3><p>Poussière, chaleur du Sahara, sites isolés, forages agricoles : peu d’outils les intègrent.</p></div>
+</div>
+<div class="stats">
+<div class="card"><div class="big" data-n="2000">0</div><p>kWh par kWc et par an : ordre de grandeur du potentiel solaire dans le Sahara</p></div>
+<div class="card"><div class="big" data-n="25">0</div><p>ans de durée de vie : plus de 90 % de la production est de l’énergie « gagnée »</p></div>
+<div class="card"><div class="big" data-n="102">0</div><p>TWh d’électricité produits en 2025 en Algérie, très majoritairement à partir du gaz naturel</p></div>
+</div></div></section>
+
+<section id="algerie" class="alt-bg"><div class="wrap">
+<h2>Pourquoi l’Algérie change tout</h2>
+<p>SolCycle remplace chaque hypothèse importée par une donnée algérienne. Le résultat n’est pas le même qu’en Europe, et c’est précisément l’intérêt.</p>
+<div class="grid3" style="margin-top:24px">
+<div class="card k"><h3>Sources de données visées</h3><p>ONM et CDER pour l’ensoleillement, Sonelgaz et CREG pour les tarifs, APRUE pour l’efficacité énergétique, données satellites en complément.</p></div>
+<div class="card g"><h3>Message clé</h3><p>Le tarif subventionné rend le solaire moins évident sur le réseau, mais SolCycle chiffre aussi les coupures évitées, le gasoil remplacé et l’énergie gagnée.</p></div>
+<div class="card b"><h3>Impact attendu</h3><p>Aider les familles, les agriculteurs, les PME et les communes à décider avec des chiffres algériens fiables.</p></div></div>
+</div></section>
+
+<section id="solution"><div class="wrap">
+<h2>La solution : un jumeau numérique de votre projet</h2>
+<p>L’utilisateur décrit son site. SolCycle en construit une copie virtuelle (ensoleillement, ombrages, consommation, équipements) puis fait tourner trois moteurs en parallèle : énergie, finance et analyse du cycle de vie. Un assistant IA propose ensuite le meilleur dimensionnement.</p>
+<div class="grid4">
+<div class="card k"><div class="ic">🏠</div><h3>Toiture</h3><p>Maison, atelier, bâtiment public. Orientation, inclinaison, autoconsommation.</p></div>
+<div class="card g"><div class="ic">🌾</div><h3>Ferme au sol</h3><p>Surface, ombrage inter-rangées, raccordement, revente.</p></div>
+<div class="card b"><div class="ic">💧</div><h3>Pompage solaire</h3><p>Irrigation et eau potable, comparaison avec le diesel.</p></div>
+<div class="card k"><div class="ic">📄</div><h3>Rapport</h3><p>PDF clair, partageable avec une banque, une mairie ou un installateur.</p></div>
+</div></div></section>
+
+<section id="demo" class="alt-bg"><div class="wrap">
+<h2>Aperçu de la plateforme : le simulateur</h2>
+<p>Cet outil donne une idée générale de la plateforme : avec quelques paramètres, SolCycle estime en dinars la production, la rentabilité, le retour énergétique et le CO₂ évité. La version complète s’appuie sur des données détaillées du site et sur l’IA.</p>
+<div class="sim">
+<div class="card">
+<label for="u">Type de projet</label><select id="u"><option value="0">Toiture de particulier</option><option value="1">Toiture de PME</option><option value="2">Ferme solaire au sol</option><option value="3">Pompage agricole</option></select>
+<label for="s">Surface disponible : <b id="sv">40</b> m²</label><input id="s" type="range" min="10" max="2000" value="40">
+<label for="p">Wilaya</label><select id="p"><option value="0">Alger</option><option value="1">Oran</option><option value="2">Constantine</option><option value="3">Djelfa</option><option value="4">Ghardaïa</option><option value="5">Adrar</option></select>
+<label for="o">Orientation</label><select id="o"><option value="1">Plein sud</option><option value=".94">Sud-est / sud-ouest</option><option value=".87">Est-ouest</option></select>
+<label for="d">Nettoyage des panneaux</label><select id="d"><option value="1">Régulier</option><option value=".94">Occasionnel</option><option value=".88">Rare (zones sableuses)</option></select>
+<p class="note" style="margin-top:14px">Paramètres du modèle : 5,5 m² par kWc, durée de vie 25 ans, dégradation moyenne de 10 %, tarifs Sonelgaz, kWh d’un groupe électrogène diesel pour le pompage.</p>
+</div>
+<div>
+<div class="res">
+<div class="card"><div class="v" id="r1">–</div><div class="l">Puissance installée (kWc)</div></div>
+<div class="card"><div class="v" id="r2">–</div><div class="l">Production annuelle (kWh)</div></div>
+<div class="card"><div class="v" id="r3">–</div><div class="l">Retour sur investissement (ans)</div></div>
+<div class="card"><div class="v" id="r4">–</div><div class="l">Retour énergétique (ans)</div></div>
+<div class="card"><div class="v" id="r5">–</div><div class="l">CO₂ évité net sur 25 ans (t)</div></div>
+<div class="card"><div class="v" id="r6">–</div><div class="l">Gain net sur 25 ans (DA)</div></div>
+</div>
+<div class="life"><i class="p" id="bp"></i><i class="e" id="be"></i></div>
+<div class="leg"><span><b style="background:var(--moss)"></b>Retour énergétique</span><span><b style="background:var(--sun)"></b>Retour financier</span><span>Échelle : 25 ans</span></div>
+<div class="ai"><strong>Recommandations IA</strong><ul id="rec"></ul></div>
+</div></div></div></section>
+
+<section id="archi"><div class="wrap">
+<h2>Architecture de la plateforme</h2>
+<p>Des données d’entrée, un cœur de simulation et des livrables. Les traits animés montrent le sens du flux.</p>
+<div class="scroll"><svg viewBox="0 0 980 330" style="min-width:760px;width:100%" role="img" aria-label="Schéma d’architecture SolCycle">
+<g font-family="Instrument Sans" font-size="14" fill="var(--ink)">
+<g><rect x="10" y="20" width="200" height="56" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="110" y="53" text-anchor="middle">Site et plan du projet</text>
+<rect x="10" y="98" width="200" height="56" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="110" y="131" text-anchor="middle">Soleil et poussière (DZ)</text>
+<rect x="10" y="176" width="200" height="56" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="110" y="209" text-anchor="middle">Tarifs Sonelgaz / CREG</text>
+<rect x="10" y="254" width="200" height="56" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="110" y="287" text-anchor="middle">Base ACV des composants</text></g>
+<g stroke="var(--sun)" stroke-width="3" fill="none"><path class="flow" d="M210 48H300"/><path class="flow" d="M210 126H300"/><path class="flow" d="M210 204H300"/><path class="flow" d="M210 282H300"/></g>
+<rect x="300" y="10" width="380" height="310" rx="18" fill="var(--soft)" stroke="var(--sea)" stroke-width="2"/>
+<text x="490" y="40" text-anchor="middle" font-family="Bricolage Grotesque" font-weight="800" font-size="18">Jumeau numérique</text>
+<rect x="322" y="58" width="164" height="62" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="404" y="85" text-anchor="middle">⚡ Moteur énergie</text><text x="404" y="105" text-anchor="middle" font-size="12" fill="var(--mut)">production horaire</text>
+<rect x="494" y="58" width="164" height="62" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="576" y="85" text-anchor="middle">💶 Moteur finance</text><text x="576" y="105" text-anchor="middle" font-size="12" fill="var(--mut)">TRI, retour, VAN</text>
+<rect x="322" y="132" width="164" height="62" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="404" y="159" text-anchor="middle">🌍 Moteur ACV</text><text x="404" y="179" text-anchor="middle" font-size="12" fill="var(--mut)">CO₂, énergie grise</text>
+<rect x="494" y="132" width="164" height="62" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="576" y="159" text-anchor="middle">🧠 Assistant IA</text><text x="576" y="179" text-anchor="middle" font-size="12" fill="var(--mut)">optimisation</text>
+<rect x="322" y="212" width="336" height="84" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="490" y="240" text-anchor="middle">Scénarios comparables</text><text x="490" y="262" text-anchor="middle" font-size="12" fill="var(--mut)">orientation, puissance, stockage, matériel</text>
+<g stroke="var(--moss)" stroke-width="2"><path d="M486 89H494M486 163H494M404 120V132M576 120V132M404 194V212M576 194V212"/></g></g>
+<g stroke="var(--sun)" stroke-width="3" fill="none"><path class="flow" d="M680 70H770"/><path class="flow" d="M680 165H770"/><path class="flow" d="M680 260H770"/></g>
+<g font-family="Instrument Sans" font-size="14" fill="var(--ink)"><rect x="770" y="40" width="200" height="60" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="870" y="75" text-anchor="middle">Tableau de bord</text>
+<rect x="770" y="135" width="200" height="60" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="870" y="170" text-anchor="middle">Rapport PDF</text>
+<rect x="770" y="230" width="200" height="60" rx="10" fill="var(--card)" stroke="var(--line)"/><text x="870" y="265" text-anchor="middle">Recommandations</text></g></svg></div>
+<table><tr><th>Couche</th><th>Technologie envisagée</th></tr>
+<tr><td>Interface</td><td>Application web (React), cartographie du toit, graphiques interactifs</td></tr>
+<tr><td>Simulation</td><td>Python : pvlib, calibré sur les mesures algériennes (ONM, CDER) et complété par des données satellites</td></tr>
+<tr><td>ACV</td><td>Facteurs d’émission de bases ouvertes, adaptés au mix électrique algérien (méthode ISO 14040/14044)</td></tr>
+<tr><td>IA</td><td>Optimisation multicritère et assistant en langage naturel</td></tr></table>
+</div></section>
+
+<section id="acv" class="alt-bg"><div class="wrap">
+<h2>La méthode ACV, étape par étape</h2>
+<p>L’analyse du cycle de vie suit le produit de l’extraction des matières à la fin de vie. SolCycle l’applique à votre projet précis, pas à un module « moyen ».</p>
+<div class="steps">
+<div><b>Matières</b>Silicium, aluminium, verre, cuivre.</div>
+<div><b>Fabrication</b>Cellules, modules, onduleurs, structures.</div>
+<div><b>Transport</b>Usine, port, chantier.</div>
+<div><b>Exploitation</b>Production, pertes, remplacement de l’onduleur.</div>
+<div><b>Fin de vie</b>Démontage, recyclage, valorisation.</div>
+</div>
+<div class="two" style="margin-top:34px">
+<div><h3>Indicateurs calculés</h3><ul class="chk"><li>Temps de retour énergétique (EPBT)</li><li>Empreinte carbone en g CO₂e/kWh</li><li>CO₂ évité selon le mix électrique du pays</li><li>Retour sur investissement, TRI et VAN</li><li>Taux d’autoconsommation et d’autosuffisance</li></ul></div>
+<div><h3>Pourquoi c’est différent</h3><p>L’utilisateur compare par exemple un toit plein sud de 6 kWc avec un toit est-ouest de 9 kWc : la rentabilité, le carbone et la courbe de production changent, et la plateforme montre pourquoi.</p></div>
+</div></div></section>
+
+<section id="ia"><div class="wrap">
+<h2>L’IA au cœur de SolCycle</h2>
+<p>L’IA relie les données du site, les calculs ACV et la décision. Elle transforme un simple simulateur en conseiller qui explique, optimise et anticipe.</p>
+<div class="card chat"><div class="m u" style="animation-delay:.2s">Pourquoi 6 kWc pour ma ferme à Djelfa et pas 10 ?</div>
+<div class="m a" style="animation-delay:1.2s"><b>SolCycle IA</b><br>Au-delà de 6 kWc, la pompe ne consomme plus toute la production : chaque kWc en plus se rentabilise en 14 ans au lieu de 7. Je recommande 6 kWc avec un réservoir de 30 m³.</div>
+<div class="m u" style="animation-delay:2.4s">Et si je nettoie les panneaux moins souvent ?</div>
+<div class="m a" style="animation-delay:3.4s"><b>SolCycle IA</b><br>Vous perdez environ 12 % de production en saison sèche, soit 1 300 kWh par an et près de 20 000 DA de gasoil. Un nettoyage mensuel est rentable.</div></div>
+<div class="grid3">
+<div class="card k"><h3>Dimensionnement optimal</h3><p>Un optimiseur multicritère teste des centaines de combinaisons de puissance, d’orientation et de stockage, et propose le meilleur compromis entre coût, carbone et autonomie.</p></div>
+<div class="card g"><h3>Prévision de production</h3><p>Des modèles d’apprentissage, nourris par la météo, la température et la poussière, prévoient la production heure par heure de chaque site.</p></div>
+<div class="card b"><h3>Lecture du toit par satellite</h3><p>La vision par ordinateur détecte la surface utile, l’orientation et les ombrages à partir d’une image satellite, sans relevé manuel.</p></div>
+<div class="card k"><h3>Assistant en français et en arabe</h3><p>L’utilisateur pose ses questions simplement et reçoit des réponses chiffrées avec les données de son projet, sans jargon.</p></div>
+<div class="card g"><h3>Détection d’anomalies</h3><p>L’IA compare production réelle et production attendue, repère encrassement, panne d’onduleur ou nouvel ombrage, et chiffre le gain d’une réparation.</p></div>
+<div class="card b"><h3>Rapport automatique</h3><p>Un dossier clair est généré : résultats, ACV et recommandations, prêt pour la banque, la commune ou l’installateur.</p></div>
+</div></div></section>
+
+<section id="cibles" class="alt-bg"><div class="wrap">
+<h2>À qui s’adresse SolCycle</h2>
+<div class="grid3">
+<div class="card k"><h3>Particuliers</h3><p>Savoir en 5 minutes si le projet vaut le coup, et ce qu’il apporte à la planète.</p></div>
+<div class="card g"><h3>PME</h3><p>Construire un dossier solide pour la banque et pour les clients attentifs au bilan carbone.</p></div>
+<div class="card b"><h3>Collectivités</h3><p>Comparer plusieurs bâtiments, justifier la décision en conseil et suivre les objectifs climat.</p></div>
+</div></div></section>
+
+<section id="feuille"><div class="wrap">
+<h2>Feuille de route</h2>
+<div class="tl">
+<div><h3>Phase 1 – Données algériennes et prototype</h3><p>Collecte des données locales (ensoleillement, tarifs, coûts), simulateur toiture et pompage.</p></div>
+<div><h3>Phase 2 – ACV complète</h3><p>Base de facteurs d’émission, CO₂ évité, rapport PDF, ferme au sol.</p></div>
+<div><h3>Phase 3 – IA</h3><p>Optimisation du dimensionnement, assistant conversationnel, pompage solaire.</p></div>
+<div><h3>Phase 4 – Déploiement</h3><p>Version collectivités, comparaison de parcs de bâtiments, API pour installateurs.</p></div>
+</div></div></section>
+
+
+</main>
+<footer><div class="wrap">SolCycle Algérie – concept de plateforme d’aide à la décision solaire, ACV et IA.</div></footer>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+var Y=[1650,1700,1750,1800,1950,2050];
+var C=[130000,100000,80000,150000],P=[4.7,7,5.5,15];
+function f(n,d){return n.toLocaleString('fr-FR',{maximumFractionDigits:d||0})}
+function calc(){
+var u=+$('u').value,s=+$('s').value,p=+$('p').value,o=+$('o').value,d=+$('d').value,g=u==3?.8:.48;
+$('sv').textContent=s;
+var kwc=s/5.5,prod=kwc*Y[p]*o*d,cost=kwc*C[u],gain=prod*P[u];
+var pay=cost/gain,epbt=3300/(Y[p]*o*d*2.3),
+ co2=(prod*25*.9*g-650*kwc)/1000,net=gain*25*.9-cost;
+$('r1').textContent=f(kwc,1);$('r2').textContent=f(prod);$('r3').textContent=f(pay,1);
+$('r4').textContent=f(epbt,1);$('r5').textContent=f(co2,1);$('r6').textContent=f(net);
+$('bp').style.width=Math.min(100,pay/25*100)+'%';$('be').style.width=Math.min(100,epbt/25*100)+'%';
+var r=[];
+if(pay>15)r.push('Retour long : le tarif Sonelgaz subventionné réduit le gain. La valeur vient aussi des coupures évitées et de la maîtrise de la facture.');else r.push('Projet rentable : le retour est inférieur à 60 % de la durée de vie.');
+if(o<1)r.push('Orientation non optimale : la perte est estimée à '+f((1-o)*100)+' %. Tester des modules plus puissants.');
+if(u==3)r.push('Gasoil remplacé : le gain est très élevé. Privilégier un réservoir d’eau plutôt qu’une batterie.');else r.push('Réseau alimenté au gaz : chaque kWh solaire évite environ 0,48 kg de CO₂.');if(d<1)r.push('Poussière : perte estimée de '+f((1-d)*100)+' %. Prévoir un plan de nettoyage.');if(p>=4)r.push('Sud saharien : choisir des modules à bon coefficient de température.');
+if(u==0&&kwc>9)r.push('Au-delà de 9 kWc, prévoir une batterie ou une revente pour valoriser le surplus.');
+
+$('rec').innerHTML=r.map(function(x){return'<li>'+x+'</li>'}).join('');
+}
+['u','s','p','o','d'].forEach(function(i){$(i).addEventListener('input',calc)});calc();
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');
+var n=e.target.querySelector('[data-n]');if(n&&!n.d){n.d=1;var t=+n.dataset.n,k=0,iv=setInterval(function(){k++;n.textContent=f(t*k/30,t%1?1:0);if(k>=30)clearInterval(iv)},30)}io.unobserve(e.target)}})},{threshold:.2});
+document.querySelectorAll('.card,.steps div,.tl div').forEach(function(e){e.classList.add('rv');io.observe(e)});
+})();
+</script>
+</body>
+</html>
